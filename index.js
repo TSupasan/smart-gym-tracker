@@ -5,6 +5,7 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
+import userRoute from "./routes/userRoute.js";
 
 const app = express();
 
@@ -14,11 +15,11 @@ app.use(cors());
 
 // Environment variables
 const PORT = process.env.PORT || 5000;
-const MONGOURL = process.env.MONGO_URI;
+const MONGOURL = process.env.MONGO_URL;
 
 // Debug (optional - you can remove later)
 console.log("PORT:", PORT);
-console.log("MONGO URI:", MONGOURL);
+console.log("MONGO URL:", MONGOURL);
 
 // MongoDB connection
 mongoose
@@ -34,6 +35,8 @@ mongoose
     console.error("MongoDB connection error:", error);
   });
 
+
+app.use("/api/user", userRoute);
 // Test route
 app.get("/", (req, res) => {
   res.send("Smart Gym Tracker API Running");
