@@ -1,7 +1,7 @@
 import Workout from "../model/workoutModel.js";
 
 
-// CREATE WORKOUT
+// CREATE WORKOUT //Integrating workout routes with controllers and testing endpoints
 export const createWorkout = async (req, res) => {
 
   try {
