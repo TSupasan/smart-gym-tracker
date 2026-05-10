@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
 import userRoute from "./routes/userRoute.js";
+import workoutRoute from "./routes/workoutRoute.js";
 
 const app = express();
 
@@ -37,6 +38,8 @@ mongoose
 
 
 app.use("/api/user", userRoute);
+
+app.use("/api/workout", workoutRoute);
 // Test route
 app.get("/", (req, res) => {
   res.send("Smart Gym Tracker API Running");
