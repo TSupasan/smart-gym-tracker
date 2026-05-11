@@ -8,6 +8,7 @@ import cors from "cors";
 import userRoute from "./routes/userRoute.js";
 import workoutRoute from "./routes/workoutRoute.js";
 import progressRoute from "./routes/progressRoute.js";
+import reminderRoute from "./routes/reminderRoute.js";
 
 const app = express();
 
@@ -43,6 +44,9 @@ app.use("/api/user", userRoute);
 app.use("/api/workout", workoutRoute);
 
 app.use("/api/progress", progressRoute);
+
+app.use("/api/reminder", reminderRoute);
+
 // Test route
 app.get("/", (req, res) => {
   res.send("Smart Gym Tracker API Running");
