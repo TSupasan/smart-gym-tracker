@@ -9,6 +9,7 @@ import userRoute from "./routes/userRoute.js";
 import workoutRoute from "./routes/workoutRoute.js";
 import progressRoute from "./routes/progressRoute.js";
 import reminderRoute from "./routes/reminderRoute.js";
+import scheduleRoute from "./routes/scheduleRoute.js";
 
 const app = express();
 
@@ -46,6 +47,8 @@ app.use("/api/workout", workoutRoute);
 app.use("/api/progress", progressRoute);
 
 app.use("/api/reminder", reminderRoute);
+
+app.use("/api/schedule", scheduleRoute);
 
 // Test route
 app.get("/", (req, res) => {
