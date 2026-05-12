@@ -1,7 +1,4 @@
 import express from "express";
-
-console.log("Workout routes loaded");
-
 import {
   createWorkout,
   getWorkouts,
@@ -9,14 +6,21 @@ import {
   deleteWorkout
 } from "../controller/workoutController.js";
 
-const route = express.Router();
+const router = express.Router();
 
-route.post("/create", createWorkout);
+// CREATE
+router.post("/create", createWorkout);
 
-route.get("/getall", getWorkouts);
+// GET ALL (NO userId)
+router.get("/getall", getWorkouts);
 
-route.put("/update/:id", updateWorkout);
+// GET BY USER ID (OPTIONAL)
+router.get("/getall/:userId", getWorkouts);
 
-route.delete("/delete/:id", deleteWorkout);
+// UPDATE
+router.put("/update/:id", updateWorkout);
 
-export default route;
+// DELETE
+router.delete("/delete/:id", deleteWorkout);
+
+export default router;
