@@ -1,12 +1,38 @@
-import { Link } from 'react-router-dom'
-import { User, Mail, Lock } from 'lucide-react'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { User, Mail, Lock, Ruler, Scale } from 'lucide-react'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
+import { useAuth } from '../context/AuthContext'
 
 export function Register() {
-  function handleSubmit(e) {
+  const { register, login } = useAuth()
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e) {
     e.preventDefault()
-    // Placeholder: wire to authApi.register when backend exists
+    setError('')
+    setLoading(true)
+    
+    const formData = new FormData(e.currentTarget)
+    const name = formData.get('name')
+    const email = formData.get('email')
+    const password = formData.get('password')
+    const height = formData.get('height')
+    const weight = formData.get('weight')
+
+    try {
+      await register({ name, email, password, height: Number(height), weight: Number(weight) })
+      // Auto login after register
+      await login({ email, password })
+      navigate('/')
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -25,6 +51,8 @@ export function Register() {
           <p className="auth-card__subtitle">
             Join thousands of lifters tracking PRs and recovery in one place.
           </p>
+
+          {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem', fontSize: '0.875rem', textAlign: 'center' }}>{error}</div>}
 
           <form className="auth-form" onSubmit={handleSubmit}>
             <label className="field">
@@ -55,6 +83,38 @@ export function Register() {
               </span>
             </label>
 
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <label className="field" style={{ flex: 1 }}>
+                <span className="field__label">Height (cm)</span>
+                <span className="field__control field__control--icon">
+                  <Ruler size={18} aria-hidden />
+                  <input
+                    type="number"
+                    name="height"
+                    placeholder="175"
+                    min="50"
+                    max="300"
+                    required
+                  />
+                </span>
+              </label>
+
+              <label className="field" style={{ flex: 1 }}>
+                <span className="field__label">Weight (kg)</span>
+                <span className="field__control field__control--icon">
+                  <Scale size={18} aria-hidden />
+                  <input
+                    type="number"
+                    name="weight"
+                    placeholder="70"
+                    min="20"
+                    max="500"
+                    required
+                  />
+                </span>
+              </label>
+            </div>
+
             <label className="field">
               <span className="field__label">Password</span>
               <span className="field__control field__control--icon">
@@ -72,11 +132,11 @@ export function Register() {
 
             <label className="checkbox auth-form__checkbox">
               <input type="checkbox" name="terms" required />{' '}
-              I agree to the Terms & Privacy policy (demo)
+              I agree to the Terms & Privacy policy
             </label>
 
-            <Button type="submit" variant="primary" className="auth-form__submit">
-              Create account
+            <Button type="submit" variant="primary" className="auth-form__submit" disabled={loading}>
+              {loading ? 'Creating account...' : 'Create account'}
             </Button>
 
             <Link to="/" className="btn btn-secondary auth-form__demo">

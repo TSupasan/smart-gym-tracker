@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   PlusCircle,
@@ -10,6 +10,9 @@ import {
   PanelLeftClose,
   PanelLeft,
 } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
+import { reminderApi } from '../services/api'
 
 const links = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
@@ -25,7 +28,10 @@ export function Sidebar({
   user,
   showCollapseToggle = true,
 }) {
-  const displayName = user?.name ?? 'Alex Rivera'
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  const displayName = user?.name ?? 'Guest User'
   const initials =
     displayName
       .split(' ')
@@ -33,6 +39,30 @@ export function Sidebar({
       .join('')
       .slice(0, 2)
       .toUpperCase() || 'U'
+
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [reminders, setReminders] = useState([])
+
+  useEffect(() => {
+    async function fetchReminders() {
+      try {
+        const { data } = await reminderApi.list()
+        // filter reminders for the logged in user if user is present
+        const userReminders = user ? data.filter(r => r.userId === user._id) : data
+        setReminders(userReminders || [])
+      } catch (err) {
+        console.error('Failed to fetch reminders', err)
+      }
+    }
+    fetchReminders()
+  }, [user])
+
+  const handleLogout = (e) => {
+    e.preventDefault()
+    logout()
+    onNavigate?.()
+    navigate('/login')
+  }
 
   return (
     <aside
@@ -80,19 +110,54 @@ export function Sidebar({
 
       <div className="sidebar-divider" aria-hidden />
 
-      <button
-        type="button"
-        className="sidebar-notify"
-        aria-label="Notifications"
-        title={collapsed ? 'Notifications' : undefined}
-      >
-        <span className="sidebar-notify__icon-wrap">
-          <Bell size={20} aria-hidden />
-          <span className="sidebar-notify__badge" aria-hidden />
-        </span>
-        <span className="sidebar-notify__text">Notifications</span>
-        <span className="sidebar-notify__chev">3</span>
-      </button>
+      <div style={{ position: 'relative' }}>
+        <button
+          type="button"
+          className="sidebar-notify"
+          aria-label="Notifications"
+          title={collapsed ? 'Notifications' : undefined}
+          onClick={() => setShowNotifications(!showNotifications)}
+        >
+          <span className="sidebar-notify__icon-wrap">
+            <Bell size={20} aria-hidden />
+            {reminders.length > 0 && <span className="sidebar-notify__badge" aria-hidden />}
+          </span>
+          <span className="sidebar-notify__text">Notifications</span>
+          <span className="sidebar-notify__chev">{reminders.length}</span>
+        </button>
+
+        {showNotifications && (
+          <div 
+            className="notifications-popover glass-card" 
+            style={{ 
+              position: 'absolute', 
+              bottom: '100%', 
+              left: 0, 
+              right: 0, 
+              zIndex: 10, 
+              padding: '1rem', 
+              maxHeight: '200px', 
+              overflowY: 'auto', 
+              marginBottom: '0.5rem',
+              backgroundColor: 'var(--color-surface)'
+            }}
+          >
+            <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem' }}>Reminders</h4>
+            {reminders.length === 0 ? (
+              <p style={{ fontSize: '0.75rem', opacity: 0.7 }}>No new reminders.</p>
+            ) : (
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {reminders.map(r => (
+                  <li key={r._id} style={{ fontSize: '0.75rem', marginBottom: '0.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.25rem' }}>
+                    <strong>{r.reminderType}</strong>: {r.message} <br/>
+                    <span style={{ opacity: 0.6 }}>{r.date} {r.reminderTime}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+      </div>
 
       <div className="sidebar-user glass-card glass-card--static">
         <div className="sidebar-user__avatar" aria-hidden>
@@ -104,16 +169,28 @@ export function Sidebar({
         </div>
       </div>
 
-      <Link
-        to="/login"
-        replace
+      <button
+        type="button"
         className="sidebar-signout"
         title="Sign out"
-        onClick={() => onNavigate?.()}
+        onClick={handleLogout}
+        style={{
+          background: 'none',
+          border: 'none',
+          color: 'inherit',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          padding: '0.5rem 1rem',
+          width: '100%',
+          cursor: 'pointer',
+          fontFamily: 'inherit',
+          fontSize: '0.875rem'
+        }}
       >
         <LogOut size={18} aria-hidden />
         <span>Sign out</span>
-      </Link>
+      </button>
 
       {!collapsed ? (
         <div className="sidebar-footer glass-card glass-card--static sidebar-promo">

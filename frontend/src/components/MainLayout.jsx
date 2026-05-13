@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { Navbar } from './Navbar'
+import { useAuth } from '../context/AuthContext'
 
 const PAGE_META = {
   '/': { title: 'Dashboard', subtitle: 'Today’s performance at a glance' },
@@ -32,6 +33,7 @@ function useDesktop(minWidth = 1024) {
 }
 
 export function MainLayout() {
+  const { user } = useAuth()
   const desktop = useDesktop()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(() => {
@@ -78,6 +80,7 @@ export function MainLayout() {
         className={`sidebar-drawer ${sidebarOpen ? 'sidebar-drawer--open' : ''}`}
       >
         <Sidebar
+          user={user}
           collapsed={effectiveCollapsed}
           onToggleCollapsed={() => setCollapsed((c) => !c)}
           onNavigate={() => setSidebarOpen(false)}

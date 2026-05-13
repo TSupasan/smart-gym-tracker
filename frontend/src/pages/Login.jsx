@@ -1,12 +1,33 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock } from 'lucide-react'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
+import { useAuth } from '../context/AuthContext'
 
 export function Login() {
-  function handleSubmit(e) {
+  const { login } = useAuth()
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e) {
     e.preventDefault()
-    // Placeholder: wire to authApi.login when backend exists
+    setError('')
+    setLoading(true)
+
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get('email')
+    const password = formData.get('password')
+
+    try {
+      await login({ email, password })
+      navigate('/')
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -25,6 +46,8 @@ export function Login() {
           <p className="auth-card__subtitle">
             Sign in to sync lifts, streaks, and recovery insights.
           </p>
+
+          {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem', fontSize: '0.875rem', textAlign: 'center' }}>{error}</div>}
 
           <form className="auth-form" onSubmit={handleSubmit}>
             <label className="field">
