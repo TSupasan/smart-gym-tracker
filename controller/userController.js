@@ -8,7 +8,7 @@ export const registerUser = async (req, res) => {
 
   try {
 
-    const { name, email, password, height, weight } = req.body;
+    const { name, email, password, height, weight, role } = req.body;
 
     const userExist = await User.findOne({ email });
 
@@ -50,7 +50,8 @@ export const registerUser = async (req, res) => {
       height,
       weight,
       bmi,
-      bmiStatus
+      bmiStatus,
+      role: role || "user"
     });
 
     await newUser.save();

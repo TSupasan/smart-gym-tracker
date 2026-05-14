@@ -22,9 +22,10 @@ export function Register() {
     const password = formData.get('password')
     const height = formData.get('height')
     const weight = formData.get('weight')
+    const role = formData.get('role')
 
     try {
-      await register({ name, email, password, height: Number(height), weight: Number(weight) })
+      await register({ name, email, password, height: Number(height), weight: Number(weight), role })
       // Auto login after register
       await login({ email, password })
       navigate('/')
@@ -112,6 +113,18 @@ export function Register() {
                     required
                   />
                 </span>
+              </label>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', alignItems: 'center' }}>
+              <span className="field__label" style={{ minWidth: '80px' }}>Role</span>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.875rem' }}>
+                <input type="radio" name="role" value="user" defaultChecked />
+                <span>Gym User</span>
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.875rem' }}>
+                <input type="radio" name="role" value="coach" />
+                <span>Coach</span>
               </label>
             </div>
 

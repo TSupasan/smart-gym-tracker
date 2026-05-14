@@ -1,4 +1,5 @@
 import express from "express";
+import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
 
 import {
   createSchedule,
@@ -9,12 +10,12 @@ import {
 
 const route = express.Router();
 
-route.post("/create", createSchedule);
+route.post("/create", protect, authorizeRoles("coach"), createSchedule);
 
-route.get("/getall", getSchedules);
+route.get("/getall", protect, getSchedules);
 
-route.put("/update/:id", updateSchedule);
+route.put("/update/:id", protect, authorizeRoles("coach"), updateSchedule);
 
-route.delete("/delete/:id", deleteSchedule);
+route.delete("/delete/:id", protect, authorizeRoles("coach"), deleteSchedule);
 
 export default route;

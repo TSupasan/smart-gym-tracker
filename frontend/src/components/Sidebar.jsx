@@ -21,6 +21,10 @@ const links = [
   { to: '/progress', label: 'Progress', icon: TrendingUp },
 ]
 
+const coachLinks = [
+  { to: '/schedules', label: 'Schedules', icon: LayoutDashboard },
+]
+
 export function Sidebar({
   collapsed,
   onToggleCollapsed,
@@ -106,6 +110,21 @@ export function Sidebar({
             <span className="sidebar-link__label">{label}</span>
           </NavLink>
         ))}
+        {user?.role === 'coach' && coachLinks.map(({ to, label, icon: Icon, end }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={end}
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? 'sidebar-link--active' : ''}`
+            }
+            onClick={() => onNavigate?.()}
+            title={collapsed ? label : undefined}
+          >
+            <Icon size={20} strokeWidth={2} aria-hidden />
+            <span className="sidebar-link__label">{label} (Coach)</span>
+          </NavLink>
+        ))}
       </nav>
 
       <div className="sidebar-divider" aria-hidden />
@@ -165,7 +184,9 @@ export function Sidebar({
         </div>
         <div className="sidebar-user__meta">
           <span className="sidebar-user__name">{displayName}</span>
-          <span className="sidebar-user__role">Pro Member</span>
+          <span className="sidebar-user__role" style={{ textTransform: 'capitalize' }}>
+            {user?.role ? `${user.role} Member` : 'Gym User'}
+          </span>
         </div>
       </div>
 

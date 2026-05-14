@@ -1,4 +1,5 @@
 import express from "express";
+import { protect } from "../middleware/authMiddleware.js";
 
 import {
   createReminder,
@@ -8,10 +9,10 @@ import {
 
 const route = express.Router();
 
-route.post("/create", createReminder);
+route.post("/create", protect, createReminder);
 
-route.get("/getall", getReminders);
+route.get("/getall", protect, getReminders);
 
-route.delete("/delete/:id", deleteReminder);
+route.delete("/delete/:id", protect, deleteReminder);
 
 export default route;

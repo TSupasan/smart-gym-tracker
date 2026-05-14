@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../model/userModel.js";
+import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
 
 import {
   registerUser,
@@ -15,7 +16,7 @@ route.post("/register", registerUser);
 route.post("/login", loginUser);
 
 // GET ALL USERS
-route.get("/", async (req, res) => {
+route.get("/", protect, authorizeRoles("coach"), async (req, res) => {
   const users = await User.find().select("-password");
   res.json(users);
 });

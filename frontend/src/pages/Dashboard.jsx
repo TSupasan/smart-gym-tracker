@@ -6,11 +6,7 @@ import { Card } from '../components/ui/Card'
 import { StatCard } from '../components/StatCard'
 import { WorkoutCard } from '../components/WorkoutCard'
 import { ProgressChart } from '../components/ProgressChart'
-
-const MOCK_PROFILE = {
-  heightCm: 178,
-  weightKg: 76,
-}
+import { useAuth } from '../context/AuthContext'
 
 function computeBmi(weightKg, heightCm) {
   const m = heightCm / 100
@@ -19,8 +15,9 @@ function computeBmi(weightKg, heightCm) {
 }
 
 export function Dashboard() {
+  const { user } = useAuth()
   const bmiGradId = `bmi-grad-${sanitizeSvgIdFragment(useId())}`
-  const bmi = computeBmi(MOCK_PROFILE.weightKg, MOCK_PROFILE.heightCm)
+  const bmi = user?.weight && user?.height ? computeBmi(user.weight, user.height) : null
   const bmiRounded = bmi ? bmi.toFixed(1) : '—'
   const radius = 52
   const circumference = 2 * Math.PI * radius
@@ -48,11 +45,14 @@ export function Dashboard() {
     <div className="page-dashboard">
       <section className="welcome-banner glass-card glass-card--hover">
         <div className="welcome-banner__intro">
-          <p className="welcome-banner__eyebrow">Good afternoon</p>
-          <h2 className="welcome-banner__title">Let’s dominate leg day</h2>
+          <p className="welcome-banner__eyebrow">Good afternoon, {user?.name}</p>
+          <h2 className="welcome-banner__title">
+            {user?.role === 'coach' ? "Manage your athletes' progress" : "Let’s dominate leg day"}
+          </h2>
           <p className="welcome-banner__text">
-            Your recovery score looks solid — progressive overload is on track this
-            week.
+            {user?.role === 'coach' 
+              ? "Check the latest schedules and athlete performance data." 
+              : "Your recovery score looks solid — progressive overload is on track this week."}
           </p>
           <div className="welcome-banner__actions">
             <Link to="/workouts/add" className="btn btn-primary welcome-banner__cta">
@@ -114,11 +114,11 @@ export function Dashboard() {
             <dl className="bmi-meta">
               <div>
                 <dt>Height</dt>
-                <dd>{MOCK_PROFILE.heightCm} cm</dd>
+                <dd>{user?.height || '—'} cm</dd>
               </div>
               <div>
                 <dt>Weight</dt>
-                <dd>{MOCK_PROFILE.weightKg} kg</dd>
+                <dd>{user?.weight || '—'} kg</dd>
               </div>
             </dl>
           </div>
