@@ -14,6 +14,8 @@ Smart Gym Workout Tracker is a full-stack fitness management web application dev
 - ⏰ Reminder System
 - 👥 Role-Based Access Control (User / Coach)
 - 🎨 Responsive Gym Dashboard UI
+- 🌗 Dark / Light Theme Support
+- 🔄 Full CRUD Operations
 
 ---
 
@@ -23,6 +25,7 @@ Smart Gym Workout Tracker is a full-stack fitness management web application dev
 - React.js
 - Vite
 - Axios
+- React Router DOM
 
 ### Backend
 - Node.js
@@ -30,11 +33,27 @@ Smart Gym Workout Tracker is a full-stack fitness management web application dev
 - MongoDB
 - Mongoose
 
+### Other Tools
+- Postman
+- GitHub
+- Cursor AI IDE
+
+---
+
+## 📌 CRUD Operations
+
+This project implements full CRUD functionality:
+
+- ➕ Create workouts and schedules
+- 📖 Read user fitness data
+- ✏️ Update workout and progress details
+- ❌ Delete workouts and reminders
+
 ---
 
 ## 📌 BMI Formula
 
-:contentReference[oaicite:0]{index=0}
+BMI = weight(kg) / height(m)^2
 
 ---
 
