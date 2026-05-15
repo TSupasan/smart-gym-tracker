@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('ironflow-user')
+    const storedUser = localStorage.getItem('fitlab-user')
     if (storedUser) {
       setUser(JSON.parse(storedUser))
     }
@@ -22,8 +22,8 @@ export function AuthProvider({ children }) {
   const login = async (credentials) => {
     const response = await authApi.login(credentials)
     const { token, user } = response.data
-    localStorage.setItem('ironflow-token', token)
-    localStorage.setItem('ironflow-user', JSON.stringify(user))
+    localStorage.setItem('fitlab-token', token)
+    localStorage.setItem('fitlab-user', JSON.stringify(user))
     setUser(user)
     return user
   }
@@ -34,8 +34,8 @@ export function AuthProvider({ children }) {
   }
 
   const logout = () => {
-    localStorage.removeItem('ironflow-token')
-    localStorage.removeItem('ironflow-user')
+    localStorage.removeItem('fitlab-token')
+    localStorage.removeItem('fitlab-user')
     setUser(null)
   }
 

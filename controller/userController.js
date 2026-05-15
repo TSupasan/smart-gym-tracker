@@ -2,6 +2,7 @@ import User from "../model/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+import Reminder from "../model/reminderModel.js";
 
 // REGISTER USER
 export const registerUser = async (req, res) => {
@@ -55,6 +56,21 @@ export const registerUser = async (req, res) => {
     });
 
     await newUser.save();
+
+    // Create a welcome reminder
+    const dateObj = new Date();
+    const dateStr = dateObj.toLocaleDateString();
+    const timeStr = dateObj.toLocaleTimeString();
+
+    const welcomeReminder = new Reminder({
+      userId: newUser._id,
+      reminderType: "System Notification",
+      message: `Welcome to FitLab, ${newUser.name}! Your account is ready.`,
+      reminderTime: timeStr,
+      date: dateStr
+    });
+    
+    await welcomeReminder.save();
 
     res.status(201).json({
       message: "User Registered Successfully",

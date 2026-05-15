@@ -41,7 +41,7 @@ export function Register() {
       <div className="auth-page__glow auth-page__glow--alt" aria-hidden />
       <div className="auth-page__inner">
         <div className="auth-page__brand">
-          <span className="auth-page__logo">IRONFLOW</span>
+          <span className="auth-page__logo">FitLab</span>
           <p className="auth-page__tagline">
             Build unstoppable momentum with data-backed sessions.
           </p>

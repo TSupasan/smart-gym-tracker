@@ -1,12 +1,36 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
+import { workoutApi } from '../services/api'
 
 export function AddWorkout() {
-  function handleSubmit(e) {
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function handleSubmit(e) {
     e.preventDefault()
+    setLoading(true)
+    setError('')
     const fd = new FormData(e.target)
-    void fd
-    // workoutApi.create(Object.fromEntries(fd)) when API exists
+    
+    try {
+      await workoutApi.create({
+        workoutName: fd.get('title'),
+        focus: fd.get('focus'),
+        duration: fd.get('durationMinutes'),
+        calories: fd.get('calories'),
+        notes: fd.get('notes'),
+        date: new Date().toLocaleDateString()
+      })
+      navigate('/history')
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to save workout')
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -16,37 +40,37 @@ export function AddWorkout() {
           <p className="card-eyebrow">Session logger</p>
           <h2 className="page-form__title">Log a workout</h2>
           <p className="page-form__lead">
-            Capture the essentials — wire these fields to{' '}
-            <code className="inline-code">workoutApi.create</code> when your backend
-            is ready.
+            Capture the essentials and track your progress over time.
           </p>
         </header>
+
+        {error && <div style={{ color: 'red', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
 
         <form className="workout-form" onSubmit={handleSubmit}>
           <div className="workout-form__grid">
             <label className="field">
               <span className="field__label">Workout name</span>
-              <input type="text" name="title" placeholder="Lower Strength · Block A" />
+              <input type="text" name="title" placeholder="Lower Strength · Block A" required />
             </label>
 
             <label className="field">
               <span className="field__label">Focus</span>
-              <select name="focus" defaultValue="strength">
-                <option value="strength">Strength</option>
-                <option value="hypertrophy">Hypertrophy</option>
-                <option value="conditioning">Conditioning</option>
-                <option value="mobility">Mobility</option>
+              <select name="focus" defaultValue="Strength" required>
+                <option value="Strength">Strength</option>
+                <option value="Hypertrophy">Hypertrophy</option>
+                <option value="Conditioning">Conditioning</option>
+                <option value="Mobility">Mobility</option>
               </select>
             </label>
 
             <label className="field">
               <span className="field__label">Duration (min)</span>
-              <input type="number" name="durationMinutes" min={10} placeholder="55" />
+              <input type="number" name="durationMinutes" min={10} placeholder="55" required />
             </label>
 
             <label className="field">
               <span className="field__label">Calories (est.)</span>
-              <input type="number" name="calories" min={0} placeholder="420" />
+              <input type="number" name="calories" min={0} placeholder="420" required />
             </label>
           </div>
 
@@ -60,10 +84,10 @@ export function AddWorkout() {
           </label>
 
           <div className="page-form__actions">
-            <Button type="submit" variant="primary">
-              Save workout (placeholder)
+            <Button type="submit" variant="primary" disabled={loading}>
+              {loading ? 'Saving...' : 'Save workout'}
             </Button>
-            <Button type="reset" variant="ghost">
+            <Button type="reset" variant="ghost" disabled={loading}>
               Clear form
             </Button>
           </div>

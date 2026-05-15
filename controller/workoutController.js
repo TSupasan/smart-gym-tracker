@@ -3,7 +3,18 @@ import Workout from "../model/workoutModel.js";
 // CREATE WORKOUT
 export const createWorkout = async (req, res) => {
   try {
-    const workout = new Workout(req.body);
+    const { workoutName, focus, duration, calories, date, notes } = req.body;
+
+    const workout = new Workout({
+      userId: req.user._id,
+      workoutName,
+      workoutType: focus,
+      duration: Number(duration),
+      caloriesBurned: Number(calories),
+      date: date || new Date().toLocaleDateString(),
+      notes
+    });
+
     await workout.save();
 
     res.status(201).json({
@@ -11,17 +22,15 @@ export const createWorkout = async (req, res) => {
       workout
     });
   } catch (error) {
+    console.error("Error creating workout:", error);
     res.status(500).json({ error: error.message });
   }
 };
 
-// GET ALL WORKOUTS (OPTIONAL FILTER BY USER)
+// GET ALL WORKOUTS FOR CURRENT USER
 export const getWorkouts = async (req, res) => {
   try {
-    const filter = req.params.userId
-      ? { userId: req.params.userId }
-      : {};
-
+    const filter = { userId: req.user._id };
     const workouts = await Workout.find(filter);
 
     res.status(200).json(workouts);

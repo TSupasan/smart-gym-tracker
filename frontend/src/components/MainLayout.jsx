@@ -5,7 +5,7 @@ import { Navbar } from './Navbar'
 import { useAuth } from '../context/AuthContext'
 
 const PAGE_META = {
-  '/': { title: 'Dashboard', subtitle: 'Today’s performance at a glance' },
+  '/dashboard': { title: 'Dashboard', subtitle: 'Today’s performance at a glance' },
   '/workouts/add': {
     title: 'Add Workout',
     subtitle: 'Log a session and keep your streak alive',
@@ -38,7 +38,7 @@ export function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(() => {
     try {
-      return localStorage.getItem('ironflow-sidebar-collapsed') === '1'
+      return localStorage.getItem('fitlab-sidebar-collapsed') === '1'
     } catch {
       return false
     }
@@ -46,13 +46,13 @@ export function MainLayout() {
 
   const location = useLocation()
   const meta = PAGE_META[location.pathname] ?? {
-    title: 'IRONFLOW',
+    title: 'FitLab',
     subtitle: '',
   }
 
   useEffect(() => {
     try {
-      localStorage.setItem('ironflow-sidebar-collapsed', collapsed ? '1' : '0')
+      localStorage.setItem('fitlab-sidebar-collapsed', collapsed ? '1' : '0')
     } catch {
       /* ignore */
     }

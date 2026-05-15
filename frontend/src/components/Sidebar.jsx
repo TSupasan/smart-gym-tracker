@@ -9,13 +9,15 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeft,
+  Home,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { reminderApi } from '../services/api'
 
 const links = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/', label: 'Home', icon: Home, end: true },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/workouts/add', label: 'Add Workout', icon: PlusCircle },
   { to: '/history', label: 'History', icon: History },
   { to: '/progress', label: 'Progress', icon: TrendingUp },
@@ -61,6 +63,15 @@ export function Sidebar({
     fetchReminders()
   }, [user])
 
+  const handleDeleteReminder = async (id) => {
+    try {
+      await reminderApi.delete(id)
+      setReminders(prev => prev.filter(r => r._id !== id))
+    } catch (err) {
+      console.error('Failed to delete reminder', err)
+    }
+  }
+
   const handleLogout = (e) => {
     e.preventDefault()
     logout()
@@ -78,7 +89,7 @@ export function Sidebar({
           <Dumbbell size={22} strokeWidth={2.25} />
         </span>
         <div className="sidebar-brand__text">
-          <span className="sidebar-brand__name">IRONFLOW</span>
+          <span className="sidebar-brand__name">FitLab</span>
           <span className="sidebar-brand__tag">Training OS</span>
         </div>
         {showCollapseToggle ? (
@@ -167,7 +178,21 @@ export function Sidebar({
             ) : (
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {reminders.map(r => (
-                  <li key={r._id} style={{ fontSize: '0.75rem', marginBottom: '0.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.25rem' }}>
+                  <li 
+                    key={r._id} 
+                    style={{ 
+                      fontSize: '0.75rem', 
+                      marginBottom: '0.5rem', 
+                      borderBottom: '1px solid var(--color-border)', 
+                      paddingBottom: '0.25rem',
+                      cursor: 'pointer',
+                      transition: 'background 0.2s',
+                      padding: '0.5rem',
+                      borderRadius: '4px'
+                    }}
+                    onClick={() => handleDeleteReminder(r._id)}
+                    title="Click to dismiss"
+                  >
                     <strong>{r.reminderType}</strong>: {r.message} <br/>
                     <span style={{ opacity: 0.6 }}>{r.date} {r.reminderTime}</span>
                   </li>

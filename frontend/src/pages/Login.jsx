@@ -35,7 +35,7 @@ export function Login() {
       <div className="auth-page__glow" aria-hidden />
       <div className="auth-page__inner">
         <div className="auth-page__brand">
-          <span className="auth-page__logo">IRONFLOW</span>
+          <span className="auth-page__logo">FitLab</span>
           <p className="auth-page__tagline">
             Precision training for athletes who refuse plateaus.
           </p>
