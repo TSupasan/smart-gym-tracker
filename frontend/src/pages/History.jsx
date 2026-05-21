@@ -53,16 +53,65 @@ export function History() {
           <p style={{ opacity: 0.7 }}>Head over to Add Workout to log your first session.</p>
         </Card>
       ) : (
-        <ul className="history-list">
+        <ul className="history-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', listStyle: 'none', padding: 0 }}>
           {workouts.map((item) => (
-            <li key={item._id}>
+            <li key={item._id} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <WorkoutCard
                 variant="history"
                 title={item.workoutName}
                 date={item.date}
                 duration={`${item.duration} min`}
-                volume={`${item.calories} kcal`}
+                volume={`${item.caloriesBurned || item.calories || 0} kcal`}
               />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', paddingRight: '1rem' }}>
+                <button 
+                  onClick={async () => {
+                    const newName = window.prompt("Update Workout Name:", item.workoutName);
+                    if (!newName) return;
+                    const newDuration = window.prompt("Update Duration (min):", item.duration);
+                    if (!newDuration) return;
+                    const newCalories = window.prompt("Update Calories:", item.caloriesBurned || item.calories);
+                    if (!newCalories) return;
+
+                    try {
+                      const payload = {
+                        workoutName: newName,
+                        duration: Number(newDuration),
+                        caloriesBurned: Number(newCalories),
+                        date: item.date
+                      };
+                      await workoutApi.update(item._id, payload);
+                      // Update local state
+                      setWorkouts(prev => prev.map(w => 
+                        w._id === item._id ? { ...w, ...payload } : w
+                      ));
+                    } catch(err) {
+                      console.error('Failed to update', err);
+                      alert('Failed to update workout');
+                    }
+                  }}
+                  className="btn"
+                  style={{ background: 'var(--color-bg-elevated)', color: 'var(--color-text)', padding: '0.4rem 1rem', borderRadius: '8px', border: '1px solid var(--color-border)', fontSize: '0.8rem' }}
+                >
+                  Edit
+                </button>
+                <button 
+                  onClick={async () => {
+                    if(window.confirm('Delete this workout?')) {
+                      try {
+                        await workoutApi.delete(item._id);
+                        setWorkouts(prev => prev.filter(w => w._id !== item._id));
+                      } catch(err) {
+                        console.error('Failed to delete', err);
+                      }
+                    }
+                  }}
+                  className="btn"
+                  style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', padding: '0.4rem 1rem', borderRadius: '8px', border: 'none', fontSize: '0.8rem' }}
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>

@@ -834,14 +834,16 @@ img {
   gap: 1rem;
 }
 
-.field {
+.field,
+.form-group {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
   text-align: left;
 }
 
-.field__label {
+.field__label,
+.form-group label {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-muted);
@@ -849,12 +851,20 @@ img {
 
 .field__control input,
 .field__control select,
-.field__control textarea {
+.field__control textarea,
+.field input,
+.field select,
+.field textarea,
+.form-control,
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
   padding: 0.75rem 0.85rem;
   border-radius: 12px;
   border: 1px solid var(--color-border);
-  background: rgba(5, 5, 8, 0.85);
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
   outline: none;
   transition:
     border-color var(--transition),
@@ -863,7 +873,14 @@ img {
 
 .field__control input:focus,
 .field__control select:focus,
-.field__control textarea:focus {
+.field__control textarea:focus,
+.field input:focus,
+.field select:focus,
+.field textarea:focus,
+.form-control:focus,
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
   border-color: rgba(239, 68, 68, 0.55);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
 }
@@ -1388,6 +1405,12 @@ img {
   background: var(--color-secondary-soft);
   border-color: rgba(34, 197, 94, 0.35);
   color: #bbf7d0;
+}
+
+.light-theme .pill--green {
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.35);
 }
 
 .pill--outline {

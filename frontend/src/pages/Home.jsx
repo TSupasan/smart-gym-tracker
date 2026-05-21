@@ -55,8 +55,17 @@ export function Home() {
           </button>
 
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <Link to="/login" className="btn btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem', borderRadius: '999px' }}>Login</Link>
-            <Link to="/register" className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem', borderRadius: '999px' }}>Register</Link>
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <span style={{ fontWeight: 500, fontSize: '0.95rem', color: 'var(--color-text)' }}>Hello, {user.name}</span>
+                <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem', borderRadius: '999px' }}>Dashboard</Link>
+              </div>
+            ) : (
+              <>
+                <Link to="/login" className="btn btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem', borderRadius: '999px' }}>Login</Link>
+                <Link to="/register" className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem', borderRadius: '999px' }}>Register</Link>
+              </>
+            )}
           </div>
         </div>
       </nav>

@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   PlusCircle,
@@ -10,10 +10,9 @@ import {
   PanelLeftClose,
   PanelLeft,
   Home,
+  CalendarDays,
 } from 'lucide-react'
-import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { reminderApi } from '../services/api'
 
 const links = [
   { to: '/', label: 'Home', icon: Home, end: true },
@@ -21,10 +20,11 @@ const links = [
   { to: '/workouts/add', label: 'Add Workout', icon: PlusCircle },
   { to: '/history', label: 'History', icon: History },
   { to: '/progress', label: 'Progress', icon: TrendingUp },
+  { to: '/schedule-plans', label: 'Schedule Plans', icon: CalendarDays },
 ]
 
 const coachLinks = [
-  { to: '/schedules', label: 'Schedules', icon: LayoutDashboard },
+  { to: '/schedules-manage', label: 'Manage Schedules', icon: CalendarDays },
 ]
 
 export function Sidebar({
@@ -45,32 +45,6 @@ export function Sidebar({
       .join('')
       .slice(0, 2)
       .toUpperCase() || 'U'
-
-  const [showNotifications, setShowNotifications] = useState(false)
-  const [reminders, setReminders] = useState([])
-
-  useEffect(() => {
-    async function fetchReminders() {
-      try {
-        const { data } = await reminderApi.list()
-        // filter reminders for the logged in user if user is present
-        const userReminders = user ? data.filter(r => r.userId === user._id) : data
-        setReminders(userReminders || [])
-      } catch (err) {
-        console.error('Failed to fetch reminders', err)
-      }
-    }
-    fetchReminders()
-  }, [user])
-
-  const handleDeleteReminder = async (id) => {
-    try {
-      await reminderApi.delete(id)
-      setReminders(prev => prev.filter(r => r._id !== id))
-    } catch (err) {
-      console.error('Failed to delete reminder', err)
-    }
-  }
 
   const handleLogout = (e) => {
     e.preventDefault()
@@ -140,72 +114,9 @@ export function Sidebar({
 
       <div className="sidebar-divider" aria-hidden />
 
-      <div style={{ position: 'relative' }}>
-        <button
-          type="button"
-          className="sidebar-notify"
-          aria-label="Notifications"
-          title={collapsed ? 'Notifications' : undefined}
-          onClick={() => setShowNotifications(!showNotifications)}
-        >
-          <span className="sidebar-notify__icon-wrap">
-            <Bell size={20} aria-hidden />
-            {reminders.length > 0 && <span className="sidebar-notify__badge" aria-hidden />}
-          </span>
-          <span className="sidebar-notify__text">Notifications</span>
-          <span className="sidebar-notify__chev">{reminders.length}</span>
-        </button>
-
-        {showNotifications && (
-          <div 
-            className="notifications-popover glass-card" 
-            style={{ 
-              position: 'absolute', 
-              bottom: '100%', 
-              left: 0, 
-              right: 0, 
-              zIndex: 10, 
-              padding: '1rem', 
-              maxHeight: '200px', 
-              overflowY: 'auto', 
-              marginBottom: '0.5rem',
-              backgroundColor: 'var(--color-surface)'
-            }}
-          >
-            <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem' }}>Reminders</h4>
-            {reminders.length === 0 ? (
-              <p style={{ fontSize: '0.75rem', opacity: 0.7 }}>No new reminders.</p>
-            ) : (
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                {reminders.map(r => (
-                  <li 
-                    key={r._id} 
-                    style={{ 
-                      fontSize: '0.75rem', 
-                      marginBottom: '0.5rem', 
-                      borderBottom: '1px solid var(--color-border)', 
-                      paddingBottom: '0.25rem',
-                      cursor: 'pointer',
-                      transition: 'background 0.2s',
-                      padding: '0.5rem',
-                      borderRadius: '4px'
-                    }}
-                    onClick={() => handleDeleteReminder(r._id)}
-                    title="Click to dismiss"
-                  >
-                    <strong>{r.reminderType}</strong>: {r.message} <br/>
-                    <span style={{ opacity: 0.6 }}>{r.date} {r.reminderTime}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
-      </div>
-
-      <div className="sidebar-user glass-card glass-card--static">
-        <div className="sidebar-user__avatar" aria-hidden>
-          {initials}
+      <Link to="/profile" className="sidebar-user glass-card glass-card--static" style={{ textDecoration: 'none', color: 'inherit' }} title="Go to Profile">
+        <div className="sidebar-user__avatar" aria-hidden style={{ overflow: 'hidden' }}>
+          {user?.profileImage ? <img src={user.profileImage} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : initials}
         </div>
         <div className="sidebar-user__meta">
           <span className="sidebar-user__name">{displayName}</span>
@@ -213,7 +124,7 @@ export function Sidebar({
             {user?.role ? `${user.role} Member` : 'Gym User'}
           </span>
         </div>
-      </div>
+      </Link>
 
       <button
         type="button"

@@ -4,7 +4,8 @@ import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
 
 import {
   registerUser,
-  loginUser
+  loginUser,
+  updateProfile
 } from "../controller/userController.js";
 
 const route = express.Router();
@@ -20,5 +21,8 @@ route.get("/", protect, authorizeRoles("coach"), async (req, res) => {
   const users = await User.find().select("-password");
   res.json(users);
 });
+
+// UPDATE PROFILE
+route.put("/profile", protect, updateProfile);
 
 export default route;

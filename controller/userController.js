@@ -132,3 +132,57 @@ export const loginUser = async (req, res) => {
   }
 
 };
+
+// UPDATE PROFILE
+export const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.name = req.body.name || user.name;
+    user.profileImage = req.body.profileImage || user.profileImage;
+
+    // Recalculate BMI if weight or height changed
+    if (req.body.weight || req.body.height) {
+      user.weight = req.body.weight || user.weight;
+      user.height = req.body.height || user.height;
+      
+      const heightInMeter = user.height / 100;
+      const bmi = (user.weight / (heightInMeter * heightInMeter)).toFixed(1);
+      user.bmi = bmi;
+
+      if (bmi < 18.5) {
+        user.bmiStatus = "Underweight";
+      } else if (bmi >= 18.5 && bmi < 25) {
+        user.bmiStatus = "Normal";
+      } else if (bmi >= 25 && bmi < 30) {
+        user.bmiStatus = "Overweight";
+      } else {
+        user.bmiStatus = "Obese";
+      }
+    }
+
+    // We can also allow updating password if needed, but not in this simple profile update
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        height: updatedUser.height,
+        weight: updatedUser.weight,
+        bmi: updatedUser.bmi,
+        bmiStatus: updatedUser.bmiStatus,
+        role: updatedUser.role,
+        profileImage: updatedUser.profileImage
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

@@ -23,6 +23,7 @@ export const authApi = {
 
 export const profileApi = {
   get: () => api.get('/user'),
+  update: (payload) => api.put('/user/profile', payload),
 }
 
 export const workoutApi = {
@@ -41,6 +42,13 @@ export const reminderApi = {
   list: () => api.get('/reminder/getall'),
   create: (payload) => api.post('/reminder/create', payload),
   delete: (id) => api.delete(`/reminder/delete/${id}`),
+}
+
+export const scheduleApi = {
+  list: (params) => api.get('/schedule/getall', { params }),
+  create: (payload) => api.post('/schedule/create', payload),
+  update: (id, payload) => api.put(`/schedule/update/${id}`, payload),
+  delete: (id) => api.delete(`/schedule/delete/${id}`),
 }
 
 export default api

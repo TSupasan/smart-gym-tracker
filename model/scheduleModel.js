@@ -2,9 +2,14 @@ import mongoose from "mongoose";
 
 const scheduleSchema = new mongoose.Schema({
 
-  userId: {
+  coachId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
+    required: true
+  },
+
+  targetCategory: {
+    type: String,
     required: true
   },
 
