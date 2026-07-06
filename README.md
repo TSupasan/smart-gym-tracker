@@ -1,20 +1,20 @@
 # 🏋️ Smart Gym Workout Tracker
 
-Smart Gym Workout Tracker is a full-stack fitness management web application developed using the MERN stack. The system helps users manage workouts, calculate BMI, track fitness progress, and organize workout schedules efficiently.
+Smart Gym Workout Tracker is a full-stack fitness management web application built using the **MERN Stack (MongoDB, Express.js, React.js, Node.js)**. It helps users manage workouts, calculate BMI, track fitness progress, organize workout schedules, and maintain a healthy fitness routine through a modern and responsive interface.
 
 ---
 
 ## 🚀 Features
 
 - 🔐 User Registration & Login
-- 📊 BMI Calculation
-- 💪 Workout Management
-- 📈 Progress Tracking
-- 📅 Weekly Workout Schedule
-- ⏰ Reminder System
 - 👥 Role-Based Access Control (User / Coach)
-- 🎨 Responsive Gym Dashboard UI
+- 💪 Workout Management
+- 📅 Weekly Workout Schedule
+- 📊 BMI Calculator
+- 📈 Fitness Progress Tracking
+- ⏰ Workout Reminder System
 - 🌗 Dark / Light Theme Support
+- 📱 Responsive User Interface
 - 🔄 Full CRUD Operations
 
 ---
@@ -26,90 +26,136 @@ Smart Gym Workout Tracker is a full-stack fitness management web application dev
 - Vite
 - Axios
 - React Router DOM
+- CSS
 
 ### Backend
 - Node.js
 - Express.js
 - MongoDB
 - Mongoose
+- JWT Authentication
 
-### Other Tools
-- Postman
+### Tools
+- Git
 - GitHub
+- Postman
 - Cursor AI IDE
 
 ---
 
 ## 📌 CRUD Operations
 
-This project implements full CRUD functionality:
+This project supports complete CRUD functionality.
 
-- ➕ Create workouts and schedules
-- 📖 Read user fitness data
-- ✏️ Update workout and progress details
-- ❌ Delete workouts and reminders
+- ➕ Create Workouts
+- 📖 Read Workout Records
+- ✏️ Update Workout Details
+- ❌ Delete Workouts
+- 📅 Manage Workout Schedules
+- 📈 Track User Progress
 
 ---
 
 ## 📌 BMI Formula
 
-BMI = weight(kg) / height(m)^2
+```text
+BMI = Weight (kg) / Height² (m²)
+```
 
 ---
 
 ## ⚙️ Installation
 
-### Backend
+### Clone the Repository
 
 ```bash
+git clone https://github.com/TSupasan/smart-gym-tracker.git
+```
+
+### Navigate to Project
+
+```bash
+cd smart-gym-tracker
+```
+
+### Backend Setup
+
+```bash
+cd backend
 npm install
 npm start
+```
 
+### Frontend Setup
 
-# 📸 Application Screenshots
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## 🏠 Home Page
+---
+
+## 📸 Application Screenshots
+
+### 🏠 Home Page
 
 | Dark Mode | Light Mode |
 |-----------|------------|
-| <img src="Screenshots/Frontend/Screenshot%202026-05-16%20145918.png" alt="Home Page Dark Mode" width="450"> | <img src="Screenshots/Frontend/Screenshot%202026-05-16%20145941.png" alt="Home Page Light Mode" width="450"> |
+| <img src="Screenshots/Frontend/Screenshot 2026-05-16 145918.png" width="450"/> | <img src="Screenshots/Frontend/Screenshot 2026-05-16 145941.png" width="450"/> |
 
 ---
 
-## 📊 Dashboard
+### 📊 Dashboard
 
 <p align="center">
-  <img src="Screenshots/Frontend/Screenshot%202026-05-16%20150053.png" alt="Dashboard" width="850">
+<img src="Screenshots/Frontend/Screenshot 2026-05-16 150053.png" width="900"/>
 </p>
 
 ---
 
-## 💪 Add Workout
+### 💪 Add Workout
 
 <p align="center">
-  <img src="Screenshots/Frontend/Screenshot%202026-05-16%20150123.png" alt="Add Workout" width="850">
+<img src="Screenshots/Frontend/Screenshot 2026-05-16 150123.png" width="900"/>
 </p>
 
 ---
 
-## 👤 Create Account
+### 👤 Create Account
 
 <p align="center">
-  <img src="Screenshots/Frontend/Screenshot%202026-05-16%20150224.png" alt="Create Account" width="850">
+<img src="Screenshots/Frontend/Screenshot 2026-05-16 150224.png" width="900"/>
 </p>
 
 ---
 
-## 🔐 Login & Register
+### 🔐 Login & Register
 
 <p align="center">
-  <img src="Screenshots/Frontend/Screenshot%202026-05-16%20150320.png" alt="Login and Register" width="850">
+<img src="Screenshots/Frontend/Screenshot 2026-05-16 150320.png" width="900"/>
 </p>
 
 ---
 
-## 👤 Profile
+### 👤 Profile
 
 <p align="center">
-  <img src="Screenshots/Frontend/Screenshot%202026-07-06%20141233.png" alt="Profile Page" width="850">
+<img src="Screenshots/Frontend/Screenshot 2026-07-06 141233.png" width="900"/>
 </p>
+
+---
+
+## 📄 License
+
+This project is developed for educational purposes.
+
+---
+
+## 👨‍💻 Developer
+
+**Tharindu Supasan**
+
+GitHub: https://github.com/TSupasan
+
+---
