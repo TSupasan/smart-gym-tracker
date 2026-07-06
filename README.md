@@ -64,3 +64,52 @@ BMI = weight(kg) / height(m)^2
 ```bash
 npm install
 npm start
+
+
+# 📸 Application Screenshots
+
+## 🏠 Home Page
+
+| Dark Mode | Light Mode |
+|-----------|------------|
+| <img src="Screenshots/Frontend/Screenshot%202026-05-16%20145918.png" alt="Home Page Dark Mode" width="450"> | <img src="Screenshots/Frontend/Screenshot%202026-05-16%20145941.png" alt="Home Page Light Mode" width="450"> |
+
+---
+
+## 📊 Dashboard
+
+<p align="center">
+  <img src="Screenshots/Frontend/Screenshot%202026-05-16%20150053.png" alt="Dashboard" width="850">
+</p>
+
+---
+
+## 💪 Add Workout
+
+<p align="center">
+  <img src="Screenshots/Frontend/Screenshot%202026-05-16%20150123.png" alt="Add Workout" width="850">
+</p>
+
+---
+
+## 👤 Create Account
+
+<p align="center">
+  <img src="Screenshots/Frontend/Screenshot%202026-05-16%20150224.png" alt="Create Account" width="850">
+</p>
+
+---
+
+## 🔐 Login & Register
+
+<p align="center">
+  <img src="Screenshots/Frontend/Screenshot%202026-05-16%20150320.png" alt="Login and Register" width="850">
+</p>
+
+---
+
+## 👤 Profile
+
+<p align="center">
+  <img src="Screenshots/Frontend/Screenshot%202026-07-06%20141233.png" alt="Profile Page" width="850">
+</p>
