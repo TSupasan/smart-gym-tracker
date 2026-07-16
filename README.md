@@ -4,6 +4,19 @@ Smart Gym Workout Tracker is a full-stack fitness management web application bui
 
 ---
 
+## 🚀 Live Demo & Project Video
+
+🌐 **Live Frontend Demo:**  
+https://smart-gym-tracker.vercel.app/
+
+🎥 **Project Demo Video:**  
+https://youtu.be/a8_xcfczpc
+
+💻 **GitHub Repository:**  
+https://github.com/TSupasan/smart-gym-tracker
+
+---
+
 ## 🚀 Features
 
 - 🔐 User Registration & Login
